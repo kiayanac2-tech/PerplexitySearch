@@ -1,18 +1,18 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import ProfileScreen from "@/screens/ProfileScreen";
-import SettingsScreen from "@/screens/SettingsScreen";
+import TeamScreen from "@/screens/TeamScreen";
+import AgentDetailScreen from "@/screens/AgentDetailScreen";
 import { useTheme } from "@/hooks/useTheme";
 import { getCommonScreenOptions } from "@/navigation/screenOptions";
 
-export type ProfileStackParamList = {
-  Profile: undefined;
-  Settings: undefined;
+export type TeamStackParamList = {
+  Team: undefined;
+  AgentDetail: { agentId: string };
 };
 
-const Stack = createNativeStackNavigator<ProfileStackParamList>();
+const Stack = createNativeStackNavigator<TeamStackParamList>();
 
-export default function ProfileStackNavigator() {
+export default function TeamStackNavigator() {
   const { theme, isDark } = useTheme();
 
   return (
@@ -22,17 +22,18 @@ export default function ProfileStackNavigator() {
       }}
     >
       <Stack.Screen
-        name="Profile"
-        component={ProfileScreen}
+        name="Team"
+        component={TeamScreen}
         options={{
-          headerTitle: "Profile",
+          headerTitle: "Team",
         }}
       />
       <Stack.Screen
-        name="Settings"
-        component={SettingsScreen}
+        name="AgentDetail"
+        component={AgentDetailScreen}
         options={{
-          headerTitle: "Settings",
+          headerTitle: "Agent Details",
+          presentation: "modal",
         }}
       />
     </Stack.Navigator>
