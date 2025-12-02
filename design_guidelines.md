@@ -1,221 +1,207 @@
-# Virtual Call Center Management App - Design Guidelines
+# VCenter - Virtual Call Center Business App - Design Guidelines
 
 ## App Overview
-A mobile workforce management platform for virtual call center operations, enabling business owners to manage agents, track performance, assign customer interactions, and monitor real-time operations.
+A comprehensive mobile platform for managing a virtual call center business. Features employee management, recruitment/marketing, training resources, and business analytics. Built for business owners venturing into work-from-home call center operations.
 
 ## Architecture Decisions
 
 ### Authentication
-**Auth Required** - This app manages business operations with multiple user roles.
+**Demo Mode Active** - Uses local storage with demo user for testing. Ready for real auth integration.
 
 **Implementation:**
-- SSO with Apple Sign-In (iOS) and Google Sign-In (cross-platform)
+- Demo admin user auto-created on first launch
 - Role-based access: Admin, Supervisor, Agent
-- Login screen with company logo placeholder
-- Account screen includes:
-  - Role badge display
-  - Employee ID
-  - Log out with confirmation
-  - Settings nested under Account
+- Logout with confirmation dialog
+- Profile screen shows role badge and employee info
 
 ### Navigation Structure
-**Tab Navigation (4 tabs + Floating Action Button)**
+**Tab Navigation (5 tabs)**
 
 **Tab Bar (Bottom):**
-1. **Dashboard** - Performance overview and metrics
-2. **Agents** - Team directory and status
-3. **Schedule** - Shift management and calendar
-4. **Reports** - Analytics and insights
-
-**Floating Action Button (FAB):**
-- Core action: "New Assignment" or "Log Call" (contextual based on user role)
-- Positioned bottom-right, elevated above tab bar
-- Admin/Supervisor: Create new ticket/assignment
-- Agent: Log customer interaction
+1. **Dashboard** - Business overview, active campaigns, real-time metrics
+2. **Team** - Agent directory with status tracking and search
+3. **Jobs** - Job postings, recruitment, application management
+4. **Training** - Onboarding modules and training resources
+5. **Profile** - User info, settings, logout
 
 ## Screen Specifications
 
 ### 1. Dashboard Screen
-**Purpose:** Real-time operations overview and quick actions
+- Horizontal scrolling metric cards (Active Agents, Total Calls, Avg Response, Revenue)
+- Quick stats row (Pending Applications, Active Campaigns)
+- Active campaigns list with agent count and call metrics
+- Currently active agents list
 
-**Layout:**
-- Header: Transparent, title "Dashboard"
-  - Right button: Notifications bell icon
-- Content: Scrollable
-  - Hero stat cards (3 horizontally scrolling cards):
-    - Active Agents (live count with green pulse indicator)
-    - Today's Calls/Tickets
-    - Avg Response Time
-  - "Current Activity" section with real-time agent status list
-  - Quick actions section (2x2 grid of action cards)
-- Safe area insets: top (headerHeight + Spacing.xl), bottom (tabBarHeight + Spacing.xl)
+### 2. Team Screen
+- Search bar with real-time filtering
+- Status filter buttons (All, Available, Busy, Break, Offline)
+- Agent cards with avatar, name, status badge, current task
+- Tap to view agent detail modal
 
-### 2. Agents Screen
-**Purpose:** Team directory with live status indicators
+### 3. Agent Detail Screen (Modal)
+- Profile section with avatar and status
+- Contact information section
+- Performance metrics grid
+- Status update buttons
+- Current task indicator if busy
 
-**Layout:**
-- Header: Custom with integrated search bar
-  - Title: "Team"
-  - Search bar for filtering agents
-  - Right button: Filter icon (by status, shift, department)
-- Content: FlatList (non-scrollable root, list handles scroll)
-  - Agent cards with:
-    - Avatar (generated preset based on role)
-    - Name and employee ID
-    - Status badge (Available/Busy/Break/Offline) with color coding
-    - Current task/call indicator if active
-    - Tap to view agent detail screen (modal)
-- Safe area insets: top (Spacing.xl - search integrated in header), bottom (tabBarHeight + Spacing.xl)
+### 4. Jobs Screen
+- Stats row (Active Jobs, Applications count)
+- Tab switcher (Job Postings / Applications)
+- Job cards with type badge, status, location, salary
+- Application list with status badges
+- FAB for creating new job posting
 
-### 3. Schedule Screen
-**Purpose:** Shift management and availability tracking
+### 5. Job Detail Screen
+- Job type and status badges
+- Full description, requirements, benefits lists
+- Applications count card (tappable)
+- Toggle job active/closed button
 
-**Layout:**
-- Header: Default navigation header
-  - Title: "Schedule"
-  - Right button: Calendar view toggle
-- Content: Scrollable
-  - Week view selector (horizontal date strip)
-  - Shift timeline visualization showing all agents
-  - Shift cards with drag-to-reschedule capability (admin only)
-  - "My Shifts" section for agent role
-- Safe area insets: top (headerHeight + Spacing.xl), bottom (tabBarHeight + Spacing.xl)
+### 6. Applications Screen
+- Job info header
+- Status filter chips
+- Application cards with status, contact info
+- Tap to view application detail
 
-### 4. Reports Screen
-**Purpose:** Performance analytics and business insights
+### 7. Application Detail Screen (Modal)
+- Applicant info section
+- Experience and cover letter display
+- Notes section if present
+- Status update grid with icons
 
-**Layout:**
-- Header: Transparent
-  - Title: "Reports"
-  - Right button: Export/Share icon
-- Content: Scrollable
-  - Date range selector at top
-  - Chart cards (bar/line charts for metrics):
-    - Call volume trends
-    - Agent performance comparison
-    - Customer satisfaction scores
-  - Detailed metrics list below charts
-- Safe area insets: top (headerHeight + Spacing.xl), bottom (tabBarHeight + Spacing.xl)
+### 8. Create Job Screen (Modal)
+- Form with title, type selector, department selector
+- Location and salary fields
+- Description textarea
+- Requirements and benefits (one per line)
 
-### 5. Agent Detail Screen (Modal)
-**Purpose:** Individual agent profile and performance
+### 9. Training Screen
+- Progress card with overall completion stats
+- Category filter chips
+- Training module cards with progress bars
+- Required badge on mandatory modules
 
-**Layout:**
-- Native modal presentation
-- Header: Non-transparent
-  - Left button: Close (X)
-  - Title: Agent name
-  - Right button: Edit (admin only)
-- Content: Scrollable form-style layout
-  - Profile section (avatar, contact info, role)
-  - Current status and location
-  - Performance metrics (calls handled, avg time, rating)
-  - Recent activity log
-  - Availability calendar
-- Submit/action button: "Assign Task" at bottom (fixed, not in header)
-- Safe area insets: top (Spacing.xl), bottom (insets.bottom + Spacing.xl)
+### 10. Module Detail Screen (Modal)
+- Category icon and badges
+- Completion progress bar
+- About section
+- Learning points list
+- Pro tip card
+- Start/Review button
 
-### 6. Create Assignment Screen (Modal)
-**Purpose:** Assign customer interactions to agents
+### 11. Profile Screen
+- Avatar with initials
+- Role badge
+- Contact info section
+- Business overview metrics
+- Menu items (Settings, Help, Terms)
+- Logout button
 
-**Layout:**
-- Native modal presentation
-- Header: Non-transparent
-  - Left button: Cancel
-  - Title: "New Assignment"
-  - Right button: "Create" (submit)
-- Content: Scrollable form
-  - Customer info fields
-  - Issue/ticket type selector
-  - Priority level selector
-  - Agent assignment dropdown (shows available agents)
-  - Notes/description textarea
-- Safe area insets: top (Spacing.xl), bottom (insets.bottom + Spacing.xl)
-
-### 7. Login Screen
-**Purpose:** Secure authentication for employees
-
-**Layout:**
-- Full screen, no header
-- Content: Centered, non-scrollable
-  - Company logo placeholder (top third)
-  - Welcome text
-  - SSO buttons (Apple, Google) stacked vertically
-  - Terms & Privacy links at bottom
-- Safe area insets: top (insets.top + Spacing.xl), bottom (insets.bottom + Spacing.xl)
+### 12. Settings Screen
+- Toggle switches for notifications, sounds, auto-refresh
+- Clear data action
+- About section with version info
 
 ## Design System
 
 ### Color Palette
 **Primary Colors:**
-- Primary: Professional blue (#2563EB) - main actions, active states
-- Secondary: Teal (#14B8A6) - accents, success states
-- Accent: Amber (#F59E0B) - warnings, pending states
+- Primary: Professional blue (#2563EB)
+- Secondary: Teal (#14B8A6)
+- Accent: Amber (#F59E0B)
 
 **Status Colors:**
 - Available/Online: Green (#10B981)
 - Busy/Active: Orange (#F97316)
 - Break: Amber (#F59E0B)
 - Offline: Gray (#6B7280)
+- Error: Red (#EF4444)
 
-**Neutrals:**
-- Background: #FFFFFF
-- Surface: #F9FAFB
-- Card background: #FFFFFF with subtle border
-- Text primary: #111827
-- Text secondary: #6B7280
+**Neutrals (Light Mode):**
+- Background Root: #FFFFFF
+- Background Default: #F9FAFB
+- Background Secondary: #F3F4F6
+- Background Tertiary: #E5E7EB
+- Text Primary: #111827
+- Text Secondary: #6B7280
 - Border: #E5E7EB
 
+**Neutrals (Dark Mode):**
+- Background Root: #111827
+- Background Default: #1F2937
+- Background Secondary: #374151
+- Background Tertiary: #4B5563
+- Text Primary: #F9FAFB
+- Text Secondary: #9CA3AF
+- Border: #374151
+
 ### Typography
-- Header Large: 28pt, Bold
-- Header Medium: 20pt, Semibold
-- Body: 16pt, Regular
-- Caption: 14pt, Regular
-- Label: 12pt, Medium
+- h1: 28pt, Bold
+- h2: 24pt, Bold
+- h3: 20pt, Semibold
+- h4: 18pt, Semibold
+- body: 16pt, Regular
+- small: 14pt, Regular
+- caption: 12pt, Medium
 
-### Interaction Design
-**Touchable Feedback:**
-- Cards: Slight scale down (0.98) + opacity (0.8) on press
-- Buttons: Solid buttons darken 10% on press
-- List items: Background highlight (#F3F4F6) on press
-- FAB: Scale animation (0.95) + shadow intensifies on press
+### Spacing
+- xs: 4px
+- sm: 8px
+- md: 12px
+- lg: 16px
+- xl: 20px
+- 2xl: 24px
+- 3xl: 32px
 
-**Floating Action Button Shadow:**
-- shadowOffset: {width: 0, height: 2}
-- shadowOpacity: 0.10
-- shadowRadius: 2
-- elevation: 4 (Android)
+### Border Radius
+- xs: 8px
+- sm: 12px
+- md: 18px
+- lg: 24px
+- full: 9999px
 
 ### Icons
 - Use Feather icons from @expo/vector-icons
-- Navigation: home, users, calendar, bar-chart-2
-- Actions: plus-circle, bell, filter, download, x
-- Status: circle (filled for status indicators)
-- Avoid emojis throughout the application
+- Navigation: home, users, briefcase, book-open, user
+- Actions: plus, search, filter, chevron-right, x
+- Status: circle (filled for indicators)
+- NO emojis throughout the application
 
-### Critical Assets
-**Required Generated Assets:**
-1. **Company Logo** - Modern, professional wordmark for login screen
-2. **Agent Avatars (6 presets)** - Minimalist, professional illustration style in brand colors:
-   - Male/Female variations
-   - Diverse representation
-   - Clean geometric style matching corporate aesthetic
-3. **Empty State Illustrations (3)**:
-   - No agents assigned yet
-   - No calls/tickets today
-   - No data for selected date range
+### Interaction Design
+- Cards: Scale to 0.98 on press with spring animation
+- Buttons: Scale with spring animation
+- List items: Opacity 0.8 on press
+- Pressable feedback on all interactive elements
 
-**Asset Style Guidelines:**
-- Clean, minimal, professional aesthetic
-- Use primary brand color palette
-- Avoid overly playful or casual styles
-- Consistent geometric illustration style
+## Data Model
 
-## Accessibility Requirements
+### Agent
+- id, name, email, phone, role, status
+- avatarIndex, employeeId, department
+- currentTask, callsHandled, avgResponseTime, rating, hireDate
+
+### JobPosting
+- id, title, description, requirements[], benefits[]
+- department, type, location, salary
+- isActive, applicationsCount, createdAt
+
+### Application
+- id, jobId, name, email, phone
+- experience, coverLetter, status, notes
+- createdAt, updatedAt
+
+### TrainingModule
+- id, title, description, category
+- duration, isRequired, completionRate, order
+
+### Campaign
+- id, name, client, description, status
+- agentsAssigned, callsToday, conversionRate
+- startDate, endDate
+
+## Accessibility
 - Minimum touch target: 44x44pt
-- Color contrast ratio: 4.5:1 for text, 3:1 for UI components
-- Status indicators: Never rely on color alone (use icons + text labels)
-- VoiceOver labels for all interactive elements
-- Support Dynamic Type for text scaling
-- Loading states with accessibility announcements
-- Form fields with clear labels and error messages
+- Color contrast maintained
+- Status indicators use icons + text (not color alone)
+- Clear labels on all interactive elements
